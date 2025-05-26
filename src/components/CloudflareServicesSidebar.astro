@@ -27,18 +27,20 @@ const services: Service[] = [
     badgeText: "Cloudflare Images"
   },
   {
-    name: "D1",
-    description: "Cloudflare's SQL database",
+    name: "D1 - Serverless SQL Database",
+    description: "Cloudflare D1 is a fast and reliable database designed for structured data storage and management. It organizes essential information in tables for quick access, ensuring a smooth experience when viewing products, reading reviews, or checking order history",
     docsUrl: "https://developers.cloudflare.com/d1/",
-    selector: "[data-d1-table], [data-d1-query]",
-    highlightType: 'outline'
+    selector: "#cf-d1",
+    highlightType: 'both',
+    badgeText: "Cloudflare D1"
   },
   {
-    name: "Workers",
-    description: "Serverless compute distributed across 330+ cities",
+    name: "Workers - Serverless Compute",
+    description: "A dynamic site requires actions beyond just displaying information. Features like 'Add to Cart', applying discounts, and searching for products rely on efficient back-end processing. Cloudflare Workers enable these seamless interactions by validating input, applying pricing rules, personalizing content, and routing requests quickly. This edge computing ensures fast processing, making the site feel immediate and responsive.",
     docsUrl: "https://developers.cloudflare.com/workers/",
-    selector: "[data-worker-endpoint]",
-    highlightType: 'outline'
+    selector: "#cf-workers",
+    highlightType: 'both',
+    badgeText: "Cloudflare Workers"
   }
 ];
 ---
@@ -54,20 +56,23 @@ const services: Service[] = [
       <div 
         class="p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer"
         data-service={service.name.toLowerCase().replace(/\s+/g, '-')}
+        data-active="false"
       >
         <h3 class="text-[#f6821f] font-medium mb-2">{service.name}</h3>
-        <p class="text-sm text-gray-600 mb-3">{service.description}</p>
-        <a 
-          href={service.docsUrl} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          class="text-[#f6821f] text-sm font-medium hover:underline inline-flex items-center gap-1"
-        >
-          Learn More
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-          </svg>
-        </a>
+        <div class="cf-service-details" style="display:none">
+          <p class="text-sm text-gray-600 mb-3">{service.description}</p>
+          <a 
+            href={service.docsUrl} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="text-[#f6821f] text-sm font-medium hover:underline inline-flex items-center gap-1"
+          >
+            Learn More
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
       </div>
     ))}
   </div>
@@ -79,7 +84,9 @@ const services: Service[] = [
   // Function to create a badge
   function createBadge(text) {
     const badge = document.createElement('div');
-    badge.className = 'absolute bottom-2 right-2 bg-[#f6821f] text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 shadow-lg z-10';
+    badge.className = 'absolute bg-[#f6821f] text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 shadow-lg z-50';
+    badge.style.bottom = '-8px';
+    badge.style.right = '-8px';
     badge.innerHTML = `
       <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
@@ -142,12 +149,27 @@ const services: Service[] = [
           // If already active, clear highlights and reset
           removeHighlights();
           activeService = null;
+          // Hide all details
+          document.querySelectorAll('[data-service]').forEach(c => {
+            c.setAttribute('data-active', 'false');
+            c.querySelector('.cf-service-details').style.display = 'none';
+          });
         } else {
           // Remove any existing highlights
           removeHighlights();
           // Add new highlights
           highlightElements(service.selector, service.highlightType, service.badgeText);
           activeService = serviceName;
+          // Show only the active details
+          document.querySelectorAll('[data-service]').forEach(c => {
+            if (c.getAttribute('data-service') === serviceName) {
+              c.setAttribute('data-active', 'true');
+              c.querySelector('.cf-service-details').style.display = '';
+            } else {
+              c.setAttribute('data-active', 'false');
+              c.querySelector('.cf-service-details').style.display = 'none';
+            }
+          });
         }
       }
     });
