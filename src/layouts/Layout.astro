@@ -12,8 +12,8 @@ import CloudflareServicesSidebar from '../components/CloudflareServicesSidebar.a
 		<title>Cloudflare Developer Services Demo</title>
 	</head>
 	<body class="font-sans">
-		<div class="flex min-h-screen">
-			<main class="flex-1">
+		<div class="grid grid-cols-[1fr_20rem] min-h-screen">
+			<main class="overflow-y-auto">
 				<slot />
 			</main>
 			<CloudflareServicesSidebar />
