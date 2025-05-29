@@ -1,7 +1,7 @@
 export interface Service {
   name: string;
   description: string;
-  docsUrl: string;
+  docsUrl?: string;
   selector: string; // CSS selector for elements
   highlightType: "badge" | "outline" | "both"; // How to highlight elements
   badgeText?: string; // Custom badge text if needed
@@ -18,7 +18,7 @@ export const useCases: Service[] = [
     name: "Application Hosting",
     description:
       "Your application needs a reliable home on the internet. Cloudflare Workers provides fast, secure hosting for your website, delivering your content quickly to customers worldwide. With support for popular frameworks like Astro, Next.js, React, Vue, Angular, and more.",
-    docsUrl: "https://developers.cloudflare.com/pages/",
+    docsUrl: "https://developers.cloudflare.com/workers/frameworks/",
     selector: ".cf-app-hosting",
     highlightType: "both",
     badgeConfigs: [
@@ -33,7 +33,6 @@ export const useCases: Service[] = [
     name: "Product Search",
     description:
       "To create a lightning-fast e-commerce search, you'd use Cloudflare's Vectorize, Workers AI, and KV. Workers AI is used to generate embeddings for the product names and descriptions, Vectorize is used to store and search the embeddings, and KV is used to cache your most frequent searches globally.",
-    docsUrl: "https://developers.cloudflare.com/vectorize/",
     selector: ".cf-search",
     highlightType: "both",
     badgeConfigs: [
@@ -80,7 +79,6 @@ export const useCases: Service[] = [
     name: "Product Details",
     description:
       "Product details are served using a combination of D1 for structured data storage and Workers for personalized content assembly. Workers AI can help generate engaging product descriptions.",
-    docsUrl: "https://developers.cloudflare.com/workers/",
     selector: ".cf-product-details",
     highlightType: "both",
     badgeConfigs: [
