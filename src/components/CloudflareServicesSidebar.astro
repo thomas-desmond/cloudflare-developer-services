@@ -7,26 +7,102 @@ interface Service {
   highlightType: 'badge' | 'outline' | 'both';  // How to highlight elements
   badgeText?: string;  // Custom badge text if needed
   badgeConfigs: {
-    selector: string;  // Specific selector for this badge instance
+    selector?: string;  // Specific selector for this badge instance
     tooltip: string;   // Tooltip text for this specific instance
+    position?: number; // Position for the badge
+    badgeText?: string; // Custom badge text for this specific instance
   }[];
 }
 
-const services: Service[] = [
+const useCases: Service[] = [
   {
-    name: "Vectorize",
-    description: "Cloudflare's vector database for AI-powered search. Store product descriptions and names as text embeddings in a vector database, and then use the vector database for AI powered search.",
+    name: "Product Search",
+    description: "To create a lightning-fast e-commerce search, you'd use Cloudflare's Vectorize, Workers AI, and KV. Workers AI is used to generate embeddings for the product names and descriptions, Vectorize is used to store and search the embeddings, and KV is used to cache your most frequent searches globally.",
     docsUrl: "https://developers.cloudflare.com/vectorize/",
-    selector: ".cf-vectorize",
+    selector: ".cf-search",
     highlightType: 'both',
-    badgeText: "Vectorize",
     badgeConfigs: [
       {
-        selector: ".cf-vectorize",
-        tooltip: "Vector search powered by Vectorize"
+        tooltip: "Vector search powered by Vectorize",
+        position: 0,
+        badgeText: "Vectorize"
+      },
+      {
+        tooltip: "Text embeddings generated with Workers AI",
+        position: 1,
+        badgeText: "Workers AI"
+      },
+      {
+        tooltip: "Globally cached results from KV",
+        position: 2,
+        badgeText: "KV"
+      }
+    ]
+  }
+  ,
+  {
+    name: "Product Images",
+    description: "For optimal product image delivery, Cloudflare Images handles optimization, and global delivery. Images can be resized and optimized for each device, reducing load times while maintaining quality. Combined with R2, for general purpose object storage..",
+    docsUrl: "https://developers.cloudflare.com/images/",
+    selector: ".cf-image",
+    highlightType: 'both',
+    badgeConfigs: [
+      {
+        selector: ".cf-image", 
+        tooltip: "Images optimized and delivered by Cloudflare Images",
+        position: 0,
+        badgeText: "Images"
+      },
+      {
+        selector: ".cf-image",
+        tooltip: "Object storage for images",
+        position: 1,
+        badgeText: "R2"
       }
     ]
   },
+  {
+    name: "Application Hosting",
+    description: "Your application needs a reliable home on the internet. Cloudflare Workers provides fast, secure hosting for your website, delivering your content quickly to customers worldwide.",
+    docsUrl: "https://developers.cloudflare.com/pages/",
+    selector: ".cf-app-hosting",
+    highlightType: 'both',
+    badgeConfigs: [
+      {
+        tooltip: "Hosted and delivered by Cloudflare Pages",
+        position: 0,
+        badgeText: "Workers"
+      }
+    ]
+  }
+  ,
+  {
+    name: "Product Details",
+    description: "Product details are served using a combination of D1 for structured data storage and Workers for personalized content assembly. Workers AI can help generate engaging product descriptions.",
+    docsUrl: "https://developers.cloudflare.com/workers/",
+    selector: ".cf-product-details",
+    highlightType: 'both',
+    badgeConfigs: [
+      {
+        tooltip: "Product data stored in D1",
+        position: 0,
+        badgeText: "D1"
+      },
+      {
+        tooltip: "Personalized content and pricing with Workers",
+        position: 1,
+        badgeText: "Workers"
+      },
+      {
+        tooltip: "AI-enhanced product descriptions",
+        position: 2,
+        badgeText: "Workers AI"
+      },
+    ]
+  }
+];
+
+const developerServices: Service[] = [
   {
     name: "Cloudflare Images",
     description: "Global image delivery and optimization. Cloudflare Images can be used to store images and then serve them in the optimal format for the user's device.",
@@ -100,7 +176,7 @@ const services: Service[] = [
         tooltip: "Data caching powered by KV"
       }
     ]
-  },
+  }
 ];
 ---
 
@@ -111,29 +187,81 @@ const services: Service[] = [
   </div>
   
   <div class="space-y-4">
-    {services.map(service => (
-      <div 
-        class="p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer"
-        data-service={service.name.toLowerCase().replace(/\s+/g, '-')}
-        data-active="false"
+    <!-- Use Cases Section -->
+    <div class="border rounded-lg overflow-hidden">
+      <button 
+        class="w-full p-4 bg-gray-50 hover:bg-gray-100 flex items-center justify-between text-left"
+        data-category="use-cases"
       >
-        <h3 class="text-[#f6821f] font-medium mb-2">{service.name}</h3>
-        <div class="cf-service-details" style="display:none">
-          <p class="text-sm text-gray-600 mb-3">{service.description}</p>
-          <a 
-            href={service.docsUrl} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="text-[#f6821f] text-sm font-medium hover:underline inline-flex items-center gap-1"
+        <h3 class="font-medium">Use Cases</h3>
+        <svg class="w-5 h-5 transform transition-transform" data-category-icon="use-cases" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+      <div class="p-4 space-y-4" data-category-content="use-cases">
+        {useCases.map(service => (
+          <div 
+            class="p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer"
+            data-service={service.name.toLowerCase().replace(/\s+/g, '-')}
+            data-active="false"
           >
-            Learn More
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-            </svg>
-          </a>
-        </div>
+            <h3 class="text-[#f6821f] font-medium mb-2">{service.name}</h3>
+            <div class="cf-service-details" style="display:none">
+              <p class="text-sm text-gray-600 mb-3">{service.description}</p>
+              <a 
+                href={service.docsUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="text-[#f6821f] text-sm font-medium hover:underline inline-flex items-center gap-1"
+              >
+                Learn More
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        ))}
       </div>
-    ))}
+    </div>
+
+    <!-- Developer Services Section -->
+    <div class="border rounded-lg overflow-hidden">
+      <button 
+        class="w-full p-4 bg-gray-50 hover:bg-gray-100 flex items-center justify-between text-left"
+        data-category="developer-services"
+      >
+        <h3 class="font-medium">Developer Services</h3>
+        <svg class="w-5 h-5 transform transition-transform" data-category-icon="developer-services" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+      <div class="p-4 space-y-4" data-category-content="developer-services">
+        {developerServices.map(service => (
+          <div 
+            class="p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer"
+            data-service={service.name.toLowerCase().replace(/\s+/g, '-')}
+            data-active="false"
+          >
+            <h3 class="text-[#f6821f] font-medium mb-2">{service.name}</h3>
+            <div class="cf-service-details" style="display:none">
+              <p class="text-sm text-gray-600 mb-3">{service.description}</p>
+              <a 
+                href={service.docsUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="text-[#f6821f] text-sm font-medium hover:underline inline-flex items-center gap-1"
+              >
+                Learn More
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   </div>
   
   <div class="mt-8 pt-6 border-t border-gray-200">
@@ -143,14 +271,16 @@ const services: Service[] = [
   </div>
 </aside>
 
-<script define:vars={{ services }}>
+<script define:vars={{ useCases, developerServices }}>
   let activeService = null;
+  const allServices = [...useCases, ...developerServices];
 
   // Function to create a badge with tooltip
-  function createBadge(badgeText, tooltip) {
+  function createBadge(badgeText, tooltip, position = 0) {
     const badge = document.createElement('div');
     badge.className = 'absolute bg-[#f6821f] text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 shadow-lg z-50 group';
-    badge.style.bottom = '-8px';
+    // Position the badge in the bottom right, stacked vertically
+    badge.style.bottom = `${-8 - (position * 28)}px`; // 28px accounts for badge height + spacing
     badge.style.right = '-8px';
     badge.innerHTML = `
       <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
@@ -174,22 +304,24 @@ const services: Service[] = [
           el.style.position = 'relative';
         }
       }
-      
       // Add highlight effect
       if (service.highlightType === 'outline' || service.highlightType === 'both') {
         el.classList.add('ring-2', 'ring-[#f6821f]', 'ring-offset-2', 'transition-all');
       }
-      
       // Add badges if needed
       if (service.highlightType === 'badge' || service.highlightType === 'both') {
-        // Find matching badge config for this element
-        const matchingConfig = service.badgeConfigs.find(config => 
-          el.matches(config.selector)
-        );
-        
-        if (matchingConfig && !el.querySelector('.bg-\\[\\#f6821f\\]')) {
-          el.appendChild(createBadge(service.badgeText, matchingConfig.tooltip));
-        }
+        // Clear existing badges for this element
+        el.querySelectorAll('.bg-\\[\\#f6821f\\]').forEach(badge => badge.remove());
+        // Add all configured badges
+        service.badgeConfigs.forEach(config => {
+          if (el.matches(config.selector || service.selector)) {
+            el.appendChild(createBadge(
+              config.badgeText || service.badgeText,
+              config.tooltip,
+              config.position
+            ));
+          }
+        });
       }
     });
   }
@@ -215,7 +347,7 @@ const services: Service[] = [
       if (target.closest('a')) return;
       
       const serviceName = card.getAttribute('data-service');
-      const service = services.find(s => s.name.toLowerCase().replace(/\s+/g, '-') === serviceName);
+      const service = allServices.find(s => s.name.toLowerCase().replace(/\s+/g, '-') === serviceName);
       
       if (service) {
         if (activeService === serviceName) {
@@ -244,6 +376,23 @@ const services: Service[] = [
             }
           });
         }
+      }
+    });
+  });
+
+  // Add click handlers for category toggles
+  document.querySelectorAll('[data-category]').forEach(button => {
+    button.addEventListener('click', () => {
+      const category = button.getAttribute('data-category');
+      const content = document.querySelector(`[data-category-content="${category}"]`);
+      const icon = document.querySelector(`[data-category-icon="${category}"]`);
+      
+      if (content.style.display === 'none') {
+        content.style.display = '';
+        icon.style.transform = 'rotate(0deg)';
+      } else {
+        content.style.display = 'none';
+        icon.style.transform = 'rotate(-90deg)';
       }
     });
   });
