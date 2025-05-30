@@ -1,9 +1,13 @@
+---
+import type { ReferenceArchitecture } from '../types/services';
+---
+
 <!-- Reference Architecture Modal -->
 <div id="ref-arch-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
   <div class="bg-white rounded-lg max-w-5xl w-full max-h-[90vh] overflow-auto">
     <div class="p-6">
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-bold text-gray-900">Product Search Reference Architecture</h2>
+        <h2 id="ref-arch-title" class="text-xl font-bold text-gray-900">Reference Architecture</h2>
         <button id="close-ref-arch-modal" class="text-gray-500 hover:text-gray-700">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -13,104 +17,52 @@
       
       <div class="mb-6">
         <img 
-          src="/product-search-ref-arch.png" 
-          alt="Product Search Reference Architecture" 
+          id="ref-arch-image"
+          src="" 
+          alt="Reference Architecture" 
           class="w-full rounded-lg border shadow-sm"
         />
       </div>
       
       <div class="space-y-6">
-        <!-- Initial Setup Section -->
-        <div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-3">Initial Setup: Populating the Vector Database</h3>
+        <!-- Initial Setup Section (conditionally rendered) -->
+        <div id="setup-section" class="hidden">
+          <h3 class="text-lg font-semibold text-gray-900 mb-3">Initial Setup</h3>
           <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
             <p class="text-sm text-gray-700 mb-3">
-              <strong>Before users can search,</strong> the system must be populated with product embeddings. This one-time setup process involves:
+              <strong>Before the system can operate,</strong> initial configuration and setup is required:
             </p>
-            <div class="space-y-2">
-              <div class="flex gap-3">
-                <div class="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">⚡</div>
-                <div>
-                  <p class="text-sm text-gray-700"><strong>Workers AI generates embeddings</strong> for all product names and descriptions in your catalog</p>
-                </div>
-              </div>
-              <div class="flex gap-3">
-                <div class="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">📊</div>
-                <div>
-                  <p class="text-sm text-gray-700"><strong>Vectorize stores these embeddings</strong> with references to the original products</p>
-                </div>
-              </div>
-              <div class="flex gap-3">
-                <div class="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">🗄️</div>
-                <div>
-                  <p class="text-sm text-gray-700"><strong>KV stores product metadata</strong> for fast retrieval during searches</p>
-                </div>
-              </div>
+            <div id="setup-steps" class="space-y-2">
+              <!-- Setup steps will be dynamically inserted here -->
             </div>
           </div>
         </div>
 
-        <!-- Runtime Search Flow -->
-        <div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-3">Runtime Search Flow</h3>
+        <!-- Runtime Flow Section -->
+        <div id="runtime-section">
+          <h3 class="text-lg font-semibold text-gray-900 mb-3">Runtime Flow</h3>
           <p class="text-sm text-gray-600 mb-4">
-            Once the vector database is populated, here's what happens when a user searches:
+            Here's what happens during normal operation:
           </p>
           
-          <div class="space-y-3">
-            <div class="flex gap-3">
-              <div class="flex-shrink-0 w-6 h-6 bg-[#f6821f] text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
-              <div>
-                <h4 class="font-medium text-gray-900">User Performs Search</h4>
-                <p class="text-sm text-gray-600">The user enters a search query through the application interface, triggering the search workflow.</p>
-              </div>
-            </div>
-            
-            <div class="flex gap-3">
-              <div class="flex-shrink-0 w-6 h-6 bg-[#f6821f] text-white rounded-full flex items-center justify-center text-sm font-bold">2</div>
-              <div>
-                <h4 class="font-medium text-gray-900">Workers AI Creates Text Embedding</h4>
-                <p class="text-sm text-gray-600">The search term is sent to Workers AI, which generates a vector embedding that captures the semantic meaning of the user's query using the same model used for product embeddings.</p>
-              </div>
-            </div>
-            
-            <div class="flex gap-3">
-              <div class="flex-shrink-0 w-6 h-6 bg-[#f6821f] text-white rounded-full flex items-center justify-center text-sm font-bold">3</div>
-              <div>
-                <h4 class="font-medium text-gray-900">Vectorize Compares and Returns Similar Products</h4>
-                <p class="text-sm text-gray-600">Vectorize performs a similarity search using the query embedding against the pre-stored product embeddings, returning the most relevant products based on semantic similarity scores.</p>
-              </div>
-            </div>
-            
-            <div class="flex gap-3">
-              <div class="flex-shrink-0 w-6 h-6 bg-[#f6821f] text-white rounded-full flex items-center justify-center text-sm font-bold">4</div>
-              <div>
-                <h4 class="font-medium text-gray-900">KV Retrieves Full Product Details</h4>
-                <p class="text-sm text-gray-600">Using the product IDs from Vectorize results, KV storage quickly retrieves the complete product information (names, descriptions, prices, images) for display to the user.</p>
-              </div>
-            </div>
+          <div id="runtime-steps" class="space-y-3">
+            <!-- Runtime steps will be dynamically inserted here -->
           </div>
         </div>
         
         <!-- Technical Details -->
         <div class="mt-6 p-4 bg-orange-50 rounded-lg">
           <h4 class="font-medium text-gray-900 mb-2">Key Technical Benefits</h4>
-          <ul class="text-sm text-gray-700 space-y-1">
-            <li>• <strong>Semantic Understanding:</strong> Finds products even when search terms don't exactly match product names</li>
-            <li>• <strong>Global Performance:</strong> Edge deployment ensures low latency worldwide</li>
-            <li>• <strong>Scalability:</strong> Handles millions of products and searches efficiently</li>
-            <li>• <strong>Cost Efficiency:</strong> Pay-per-use model with intelligent caching</li>
-            <li>• <strong>Real-time Updates:</strong> New products can be embedded and indexed immediately</li>
+          <ul id="benefits-list" class="text-sm text-gray-700 space-y-1">
+            <!-- Benefits will be dynamically inserted here -->
           </ul>
         </div>
 
         <!-- Implementation Notes -->
         <div class="mt-4 p-4 bg-gray-50 rounded-lg">
           <h4 class="font-medium text-gray-900 mb-2">Implementation Notes</h4>
-          <p class="text-sm text-gray-600">
-            The embedding model consistency is crucial - the same Workers AI model must be used for both initial product embedding generation 
-            and runtime query embedding to ensure accurate similarity matching. This architecture supports both batch processing for initial 
-            setup and real-time processing for new products.
+          <p id="implementation-notes" class="text-sm text-gray-600">
+            <!-- Implementation notes will be dynamically inserted here -->
           </p>
         </div>
       </div>
@@ -119,13 +71,22 @@
 </div>
 
 <script>
+  // Current reference architecture data
+  let currentRefArch: any = null;
+
   // Reference Architecture Modal Functions
-  function openRefArchModal() {
+  function openRefArchModal(refArchData: any) {
     const modal = document.getElementById('ref-arch-modal');
-    if (modal) {
-      modal.classList.remove('hidden');
-      document.body.style.overflow = 'hidden'; // Prevent background scrolling
-    }
+    if (!modal || !refArchData) return;
+    
+    currentRefArch = refArchData;
+    
+    // Update modal content
+    updateModalContent(refArchData);
+    
+    // Show modal
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
   }
 
   function closeRefArchModal() {
@@ -134,6 +95,63 @@
       modal.classList.add('hidden');
       document.body.style.overflow = ''; // Restore scrolling
     }
+  }
+
+  function updateModalContent(refArch: any) {
+    // Update title
+    const titleEl = document.getElementById('ref-arch-title');
+    if (titleEl) titleEl.textContent = refArch.title;
+    
+    // Update image
+    const imageEl = document.getElementById('ref-arch-image') as HTMLImageElement;
+    if (imageEl) {
+      imageEl.src = refArch.imagePath;
+      imageEl.alt = refArch.title;
+    }
+    
+    // Update setup section
+    const setupSection = document.getElementById('setup-section');
+    const setupStepsContainer = document.getElementById('setup-steps');
+    
+    if (refArch.setupSteps && refArch.setupSteps.length > 0 && setupSection && setupStepsContainer) {
+      setupSection.classList.remove('hidden');
+      setupStepsContainer.innerHTML = refArch.setupSteps.map((step: any) => `
+        <div class="flex gap-3">
+          <div class="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">${step.icon}</div>
+          <div>
+            <p class="text-sm text-gray-700"><strong>${step.title}</strong> ${step.description}</p>
+          </div>
+        </div>
+      `).join('');
+    } else if (setupSection) {
+      setupSection.classList.add('hidden');
+    }
+    
+    // Update runtime steps
+    const runtimeStepsContainer = document.getElementById('runtime-steps');
+    if (runtimeStepsContainer) {
+      runtimeStepsContainer.innerHTML = refArch.runtimeSteps.map((step: any) => `
+        <div class="flex gap-3">
+          <div class="flex-shrink-0 w-6 h-6 bg-[#f6821f] text-white rounded-full flex items-center justify-center text-sm font-bold">${step.stepNumber}</div>
+          <div>
+            <h4 class="font-medium text-gray-900">${step.title}</h4>
+            <p class="text-sm text-gray-600">${step.description}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    // Update benefits
+    const benefitsContainer = document.getElementById('benefits-list');
+    if (benefitsContainer) {
+      benefitsContainer.innerHTML = refArch.benefits.map((benefit: string) => `
+        <li>• <strong>${benefit.split(':')[0]}${benefit.includes(':') ? ':' : ''}</strong>${benefit.includes(':') ? benefit.split(':').slice(1).join(':') : ''}</li>
+      `).join('');
+    }
+    
+    // Update implementation notes
+    const notesEl = document.getElementById('implementation-notes');
+    if (notesEl) notesEl.textContent = refArch.implementationNotes;
   }
 
   // Add reference architecture modal handlers
@@ -145,7 +163,14 @@
     if (target.closest('[data-ref-arch-trigger]')) {
       e.preventDefault();
       e.stopPropagation();
-      openRefArchModal();
+      
+      const trigger = target.closest('[data-ref-arch-trigger]') as HTMLElement;
+      const useCaseName = trigger.getAttribute('data-ref-arch-trigger');
+      
+      // Get reference architecture data from global variable
+      if (useCaseName && (window as any).refArchData && (window as any).refArchData[useCaseName]) {
+        openRefArchModal((window as any).refArchData[useCaseName]);
+      }
     }
     
     // Close modal when close button is clicked
