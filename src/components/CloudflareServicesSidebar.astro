@@ -169,6 +169,23 @@ import ReferenceArchitectureModal from './ReferenceArchitectureModal.astro';
     return badge;
   }
 
+  // Function to create and attach badges to an element
+  function attachBadgesToElement(element, service) {
+    // Clear existing badges for this element
+    element.querySelectorAll('.bg-\\[\\#f6821f\\]').forEach(badge => badge.remove());
+    
+    // Add all configured badges
+    service.badgeConfigs.forEach(config => {
+      if (element.matches(config.selector || service.selector)) {
+        element.appendChild(createBadge(
+          config.badgeText || service.badgeText,
+          config.tooltip,
+          config.position
+        ));
+      }
+    });
+  }
+
   // Function to highlight elements
   function highlightElements(service) {
     const elements = document.querySelectorAll(service.selector);
@@ -185,18 +202,7 @@ import ReferenceArchitectureModal from './ReferenceArchitectureModal.astro';
       }
       // Add badges if needed
       if (service.highlightType === 'badge' || service.highlightType === 'both') {
-        // Clear existing badges for this element
-        el.querySelectorAll('.bg-\\[\\#f6821f\\]').forEach(badge => badge.remove());
-        // Add all configured badges
-        service.badgeConfigs.forEach(config => {
-          if (el.matches(config.selector || service.selector)) {
-            el.appendChild(createBadge(
-              config.badgeText || service.badgeText,
-              config.tooltip,
-              config.position
-            ));
-          }
-        });
+        attachBadgesToElement(el, service);
       }
     });
   }
