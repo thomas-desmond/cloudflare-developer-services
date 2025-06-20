@@ -46,7 +46,7 @@ import TourOverlay from './TourOverlay.astro';
   </div>
 
   <!-- Normal Sidebar Interface -->
-  <div id="normal-interface" class="flex-1 overflow-y-auto px-6">
+  <div id="normal-interface" class="flex-1 overflow-y-auto px-6 py-2">
     <div class="flex items-center gap-2 mb-8">
       <span class="text-xl">⚡</span>
       <h2 class="text-lg font-semibold">Powered by Cloudflare</h2>
@@ -431,4 +431,7 @@ import TourOverlay from './TourOverlay.astro';
   if (window.showTourOverlay) {
     window.showTourOverlay();
   }
+
+  // Auto-start tour on initial page load
+  startTour();
 </script> 

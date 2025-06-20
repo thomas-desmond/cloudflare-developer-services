@@ -34,7 +34,7 @@ export interface Service {
 export const useCases: Service[] = [
   {
     name: "Welcome to Cloudflare",
-    description: "This application demonstrates how Cloudflare's developer services power modern web applications. Let's explore the key features!",
+    description: "This application demonstrates how Cloudflare's developer services could be used to power modern web applications. This demo is not designed to be fully functional, but rather to show how the services can be used in a real application. Let's explore the key features!",
     highlightType: "both",
     selector: ".cf-welcome",
     badgeConfigs: [
