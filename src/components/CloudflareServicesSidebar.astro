@@ -164,6 +164,17 @@ import TourOverlay from './TourOverlay.astro';
       <div class="space-y-4">
         <h3 class="text-2xl font-semibold text-gray-900">${step.name}</h3>
         <p class="text-gray-700 leading-relaxed">${step.description}</p>
+        ${step.referenceArchitecture ? `
+          <button 
+            class="mt-4 inline-flex items-center gap-2 text-[#f6821f] hover:text-[#e6731a] font-medium"
+            data-ref-arch-trigger="${step.name.toLowerCase().replace(/\s+/g, '-')}"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+            </svg>
+            View Reference Architecture
+          </button>
+        ` : ''}
       </div>
     `;
     
