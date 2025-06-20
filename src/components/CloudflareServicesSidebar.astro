@@ -5,7 +5,47 @@ import ServiceCard from './ServiceCard.astro';
 ---
 
 <aside class="fixed top-0 right-0 h-screen w-80 bg-white border-l border-gray-200 flex flex-col">
-  <div class="flex-1 overflow-y-auto px-6">
+  <!-- Tour Mode Interface -->
+  <div id="tour-interface" class="hidden flex-1 flex flex-col">
+    <div class="flex items-center gap-2 mb-6 px-6 pt-6">
+      <span class="text-xl">🎯</span>
+      <h2 class="text-lg font-semibold">Cloudflare Tour</h2>
+    </div>
+    
+    <div class="flex-1 overflow-y-auto px-6">
+      <div id="tour-content" class="space-y-4">
+        <!-- Tour content will be populated by JavaScript -->
+      </div>
+    </div>
+    
+    <div class="flex-shrink-0 pt-4 border-t border-gray-200 p-6">
+      <div class="flex justify-between items-center mb-4">
+        <button 
+          id="tour-prev" 
+          class="px-4 py-2 text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled
+        >
+          ← Previous
+        </button>
+        <span id="tour-progress" class="text-sm text-gray-500">1 of 5</span>
+        <button 
+          id="tour-next" 
+          class="px-4 py-2 bg-[#3E74FF] text-white rounded-lg hover:bg-[#2D5FDF] transition-colors"
+        >
+          Next →
+        </button>
+      </div>
+      <button 
+        id="tour-exit" 
+        class="w-full px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+      >
+        Exit Tour
+      </button>
+    </div>
+  </div>
+
+  <!-- Normal Sidebar Interface -->
+  <div id="normal-interface" class="flex-1 overflow-y-auto px-6">
     <div class="flex items-center gap-2 mb-8">
       <span class="text-xl">⚡</span>
       <h2 class="text-lg font-semibold">Powered by Cloudflare</h2>
@@ -55,18 +95,27 @@ import ServiceCard from './ServiceCard.astro';
   </div>
   
   <div class="flex-shrink-0 pt-2 border-t border-gray-200 p-2 sticky bottom-0 bg-white">
+    <button 
+      id="start-tour-btn"
+      class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#f6821f] text-white rounded-lg hover:bg-[#e6731a] transition-colors mb-4"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+      </svg>
+      Start Tour
+    </button>
+    
     <a 
       href="https://forms.gle/ZgX9y5Zeqq9Rpfft9"
       target="_blank"
       rel="noopener noreferrer"
-      class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#3E74FF] text-white rounded-lg hover:bg-[#2D5FDF] transition-colors mb-4"
+      class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#3E74FF] text-white rounded-lg hover:bg-[#2D5FDF] transition-colors"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd" />
       </svg>
       Provide Feedback
     </a>
-
   </div>
 </aside>
 
@@ -75,6 +124,125 @@ import ServiceCard from './ServiceCard.astro';
 <script define:vars={{ useCases, developerServices }}>
   let activeService = null;
   const allServices = [...useCases, ...developerServices];
+
+  // Tour functionality
+  const tourSteps = [
+    {
+      title: "Welcome to Cloudflare",
+      content: "This application demonstrates how Cloudflare's developer services power modern web applications. Let's explore the key features!",
+      highlight: null
+    },
+    {
+      title: "Application Hosting",
+      content: "This section showcases Cloudflare Pages, our JAMstack platform for building and deploying fast, secure websites. Notice how the content is served globally with edge computing.",
+      highlight: ".cf-app-hosting"
+    },
+    {
+      title: "Product Catalog",
+      content: "The product catalog is powered by Cloudflare D1, our serverless SQL database. It provides fast, consistent data access without managing database infrastructure.",
+      highlight: ".cf-product-catalog"
+    },
+    {
+      title: "User Authentication",
+      content: "User authentication is handled by Cloudflare Access, providing secure identity management and zero-trust security for your applications.",
+      highlight: ".cf-auth"
+    },
+    {
+      title: "Content Delivery",
+      content: "All static assets and content are delivered through Cloudflare's global CDN, ensuring fast loading times for users worldwide.",
+      highlight: ".cf-cdn"
+    }
+  ];
+
+  let currentTourStep = 0;
+  let isTourActive = false;
+
+  // Tour UI elements
+  const tourInterface = document.getElementById('tour-interface');
+  const normalInterface = document.getElementById('normal-interface');
+  const startTourBtn = document.getElementById('start-tour-btn');
+  const tourContent = document.getElementById('tour-content');
+  const tourProgress = document.getElementById('tour-progress');
+  const tourPrev = document.getElementById('tour-prev');
+  const tourNext = document.getElementById('tour-next');
+  const tourExit = document.getElementById('tour-exit');
+
+  function startTour() {
+    isTourActive = true;
+    currentTourStep = 0;
+    tourInterface.classList.remove('hidden');
+    normalInterface.classList.add('hidden');
+    updateTourStep();
+  }
+
+  function exitTour() {
+    isTourActive = false;
+    tourInterface.classList.add('hidden');
+    normalInterface.classList.remove('hidden');
+    removeTourHighlight();
+  }
+
+  function updateTourStep() {
+    const step = tourSteps[currentTourStep];
+    
+    // Update content
+    tourContent.innerHTML = `
+      <div class="space-y-4">
+        <h3 class="text-lg font-semibold text-gray-900">${step.title}</h3>
+        <p class="text-gray-700 leading-relaxed">${step.content}</p>
+      </div>
+    `;
+    
+    // Update progress
+    tourProgress.textContent = `${currentTourStep + 1} of ${tourSteps.length}`;
+    
+    // Update navigation buttons
+    tourPrev.disabled = currentTourStep === 0;
+    tourNext.textContent = currentTourStep === tourSteps.length - 1 ? 'Finish' : 'Next →';
+    
+    // Handle highlighting
+    removeTourHighlight();
+    if (step.highlight) {
+      addTourHighlight(step.highlight);
+    }
+  }
+
+  function addTourHighlight(selector) {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(el => {
+      el.classList.add('ring-4', 'ring-[#f6821f]', 'ring-offset-4', 'transition-all', 'duration-300');
+      el.style.zIndex = '10';
+    });
+  }
+
+  function removeTourHighlight() {
+    document.querySelectorAll('.ring-\\[\\#f6821f\\]').forEach(el => {
+      el.classList.remove('ring-4', 'ring-[#f6821f]', 'ring-offset-4', 'transition-all', 'duration-300');
+      el.style.zIndex = '';
+    });
+  }
+
+  function nextTourStep() {
+    if (currentTourStep < tourSteps.length - 1) {
+      currentTourStep++;
+      updateTourStep();
+    } else {
+      exitTour();
+    }
+  }
+
+  function prevTourStep() {
+    if (currentTourStep > 0) {
+      currentTourStep--;
+      updateTourStep();
+    }
+  }
+
+  // Tour event listeners
+  startTourBtn.addEventListener('click', startTour);
+  tourExit.addEventListener('click', exitTour);
+  tourNext.addEventListener('click', nextTourStep);
+  tourPrev.addEventListener('click', prevTourStep);
 
   // Initialize collapsible sections
   document.querySelectorAll('[data-category-content]').forEach(content => {
