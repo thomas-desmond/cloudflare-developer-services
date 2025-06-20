@@ -64,7 +64,7 @@ import ServiceCard from './ServiceCard.astro';
           </svg>
         </button>
         <div class="p-4 space-y-4" data-category-content="use-cases">
-          {useCases.map(service => (
+          {useCases.slice(1).map(service => (
             <ServiceCard service={service} />
           ))}
         </div>
@@ -125,35 +125,6 @@ import ServiceCard from './ServiceCard.astro';
   let activeService = null;
   const allServices = [...useCases, ...developerServices];
 
-  // Tour functionality
-  const tourSteps = [
-    {
-      title: "Welcome to Cloudflare",
-      content: "This application demonstrates how Cloudflare's developer services power modern web applications. Let's explore the key features!",
-      highlight: null
-    },
-    {
-      title: "Application Hosting",
-      content: "This section showcases Cloudflare Pages, our JAMstack platform for building and deploying fast, secure websites. Notice how the content is served globally with edge computing.",
-      highlight: ".cf-app-hosting"
-    },
-    {
-      title: "Product Catalog",
-      content: "The product catalog is powered by Cloudflare D1, our serverless SQL database. It provides fast, consistent data access without managing database infrastructure.",
-      highlight: ".cf-product-catalog"
-    },
-    {
-      title: "User Authentication",
-      content: "User authentication is handled by Cloudflare Access, providing secure identity management and zero-trust security for your applications.",
-      highlight: ".cf-auth"
-    },
-    {
-      title: "Content Delivery",
-      content: "All static assets and content are delivered through Cloudflare's global CDN, ensuring fast loading times for users worldwide.",
-      highlight: ".cf-cdn"
-    }
-  ];
-
   let currentTourStep = 0;
   let isTourActive = false;
 
@@ -183,27 +154,27 @@ import ServiceCard from './ServiceCard.astro';
   }
 
   function updateTourStep() {
-    const step = tourSteps[currentTourStep];
+    const step = useCases[currentTourStep];
     
     // Update content
     tourContent.innerHTML = `
       <div class="space-y-4">
-        <h3 class="text-lg font-semibold text-gray-900">${step.title}</h3>
-        <p class="text-gray-700 leading-relaxed">${step.content}</p>
+        <h3 class="text-lg font-semibold text-gray-900">${step.name}</h3>
+        <p class="text-gray-700 leading-relaxed">${step.description}</p>
       </div>
     `;
     
     // Update progress
-    tourProgress.textContent = `${currentTourStep + 1} of ${tourSteps.length}`;
+    tourProgress.textContent = `${currentTourStep + 1} of ${useCases.length}`;
     
     // Update navigation buttons
     tourPrev.disabled = currentTourStep === 0;
-    tourNext.textContent = currentTourStep === tourSteps.length - 1 ? 'Finish' : 'Next →';
+    tourNext.textContent = currentTourStep === useCases.length - 1 ? 'Finish' : 'Next →';
     
     // Handle highlighting
     removeTourHighlight();
-    if (step.highlight) {
-      addTourHighlight(step.highlight);
+    if (step.selector) {
+      addTourHighlight(step.selector);
     }
   }
 
@@ -223,7 +194,7 @@ import ServiceCard from './ServiceCard.astro';
   }
 
   function nextTourStep() {
-    if (currentTourStep < tourSteps.length - 1) {
+    if (currentTourStep < useCases.length - 1) {
       currentTourStep++;
       updateTourStep();
     } else {

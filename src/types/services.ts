@@ -33,6 +33,19 @@ export interface Service {
 
 export const useCases: Service[] = [
   {
+    name: "Welcome to Cloudflare",
+    description: "This application demonstrates how Cloudflare's developer services power modern web applications. Let's explore the key features!",
+    highlightType: "both",
+    selector: ".cf-welcome",
+    badgeConfigs: [
+      {
+        tooltip: "Hosted and delivered by Cloudflare Workers",
+        position: 0,
+        badgeText: "Workers",
+      },
+    ],
+  },
+  {
     name: "Application Hosting",
     description:
       "Your application needs a reliable home on the internet. Cloudflare Workers provides fast, secure hosting for your website, delivering your content quickly to customers worldwide. With support for popular frameworks like Astro, Next.js, React, Vue, Angular, and more.",
