@@ -1,0 +1,95 @@
+---
+// TourOverlay component
+---
+
+<!-- Tour Introduction Overlay -->
+<div id="tour-overlay" class="fixed inset-0 z-50 pointer-events-none">
+  <!-- Dotted line highlight around the sidebar -->
+  <div class="absolute top-0 right-0 w-80 h-screen border-4 border-dotted border-[#f6821f] pointer-events-none animate-pulse"></div>
+  
+  <!-- Subtle backdrop behind modal -->
+  <div class="absolute top-0 left-0 w-full h-full bg-black/20 pointer-events-none"></div>
+
+  <!-- Modal positioned in top left -->
+  <div class="absolute top-8 left-8 bg-white rounded-xl shadow-2xl max-w-md p-6 pointer-events-auto border border-gray-200">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="text-2xl">🎯</span>
+      <h2 class="text-xl font-semibold text-gray-900">Welcome to Cloudflare Demo</h2>
+    </div>
+    
+    <div class="space-y-4 mb-6">
+      <p class="text-gray-700 leading-relaxed">
+        This interactive demo showcases how Cloudflare's developer services can power modern web applications. 
+        You'll see real-world use cases and learn about the services that make it all possible.
+      </p>
+      
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div class="flex items-start gap-3">
+          <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+          </svg>
+          <div>
+            <p class="text-sm text-blue-800 font-medium">Interactive Tour</p>
+            <p class="text-sm text-blue-700 mt-1">
+              Take a guided tour to explore each service and see how they work together in real applications.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="flex gap-3">
+      <button 
+        id="skip-tour-btn"
+        class="flex-1 px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+      >
+        Skip Tour
+      </button>
+      <button 
+        id="continue-tour-btn"
+        class="flex-1 px-4 py-2 bg-[#f6821d] text-white rounded-lg hover:bg-[#e6731a] transition-colors"
+      >
+        Start Tour
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Tour overlay functionality
+  const tourOverlay = document.getElementById('tour-overlay');
+  const skipTourBtn = document.getElementById('skip-tour-btn');
+  const continueTourBtn = document.getElementById('continue-tour-btn');
+
+  function showTourOverlay() {
+    tourOverlay.classList.remove('hidden');
+  }
+
+  function hideTourOverlay() {
+    tourOverlay.classList.add('hidden');
+  }
+
+  function skipTour() {
+    hideTourOverlay();
+    // Show normal interface
+    const normalInterface = document.getElementById('normal-interface');
+    const tourInterface = document.getElementById('tour-interface');
+    if (normalInterface) normalInterface.classList.remove('hidden');
+    if (tourInterface) tourInterface.classList.add('hidden');
+  }
+
+  function startTour() {
+    hideTourOverlay();
+    // Trigger tour start
+    const startTourBtn = document.getElementById('start-tour-btn');
+    if (startTourBtn) startTourBtn.click();
+  }
+
+  // Event listeners
+  skipTourBtn.addEventListener('click', skipTour);
+  continueTourBtn.addEventListener('click', startTour);
+
+  // Expose functions globally for the sidebar component
+  window.showTourOverlay = showTourOverlay;
+  window.hideTourOverlay = hideTourOverlay;
+</script> 
