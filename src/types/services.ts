@@ -59,57 +59,39 @@ export const useCases: Service[] = [
         badgeText: "Workers",
       },
     ],
-    // referenceArchitecture: {
-    //   imagePath: "/app-hosting-ref-arch.png",
-    //   title: "Application Hosting Reference Architecture",
-    //   setupSteps: [
-    //     {
-    //       icon: "🔧",
-    //       title: "Build Application",
-    //       description: "Develop your application using supported frameworks like Astro, Next.js, React, or Vue"
-    //     },
-    //     {
-    //       icon: "📦",
-    //       title: "Deploy to Workers",
-    //       description: "Deploy your application to Cloudflare Workers with automatic optimization"
-    //     },
-    //     {
-    //       icon: "🌐",
-    //       title: "Global Distribution",
-    //       description: "Application is automatically distributed across Cloudflare's global edge network"
-    //     }
-    //   ],
-    //   runtimeSteps: [
-    //     {
-    //       stepNumber: 1,
-    //       title: "User Requests Page",
-    //       description: "A user visits your website from anywhere in the world"
-    //     },
-    //     {
-    //       stepNumber: 2,
-    //       title: "Edge Processing",
-    //       description: "Request is routed to the nearest Cloudflare edge location for optimal performance"
-    //     },
-    //     {
-    //       stepNumber: 3,
-    //       title: "Workers Execution",
-    //       description: "Your application code runs on Cloudflare Workers at the edge"
-    //     },
-    //     {
-    //       stepNumber: 4,
-    //       title: "Fast Response",
-    //       description: "Optimized content is delivered to the user with minimal latency"
-    //     }
-    //   ],
-    //   benefits: [
-    //     "Global edge deployment with 200+ locations worldwide",
-    //     "Automatic scaling based on traffic demands",
-    //     "Built-in security and DDoS protection",
-    //     "Zero cold starts for instant response times",
-    //     "Cost-effective pay-per-request pricing"
-    //   ],
-    //   implementationNotes: "Cloudflare Workers supports many popular frameworks out of the box. The platform automatically handles routing, caching, and optimization, making deployment as simple as a single command."
-    // }
+    referenceArchitecture: {
+      imagePath: "/application-hosting-ref-arch.png",
+      title: "Application Hosting",
+      runtimeSteps: [
+        {
+          stepNumber: 1,
+          title: "Visitor requests your website",
+          description: "A person enters your website address or clicks a link, sending a request for your site from anywhere in the world.",
+        },
+        {
+          stepNumber: 2,
+          title: "Cloudflare receives the request",
+          description: "Cloudflare's global network catches this request and sends it to the closest server (called an edge location) to the visitor.",
+        },
+        {
+          stepNumber: 3,
+          title: "Cloudflare runs your Worker or serves your files",
+          description: "If your site uses dynamic logic, Cloudflare runs your Worker (a special program for server-side code). If not, Cloudflare finds and sends your static website files (like HTML, CSS, or images) to build the page.",
+        },
+        {
+          stepNumber: 4,
+          title: "Cloudflare delivers the response",
+          description: "Cloudflare sends the finished page or data back to the visitor, using built-in tools to make it fast and secure.",
+        },
+      ],
+      benefits: [
+        "Global Distribution: Serve your app from Cloudflare's worldwide edge network.",
+        "Zero DevOps: No infrastructure to manage—just push code.",
+        "Automatic Scaling: Handles sudden spikes in traffic without manual intervention.",
+        "Secure by Default: DDoS protection, SSL, and WAF included.",
+      ],
+      implementationNotes: "Cloudflare Workers supports many popular frameworks out of the box React, Next.js, Astro, Angular, Vue, and more. The platform automatically handles routing, caching, and optimization, making deployment as simple as a single command.",
+    },
   },
   {
     name: "Product Search",
