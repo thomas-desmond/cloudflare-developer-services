@@ -181,7 +181,7 @@ export const useCases: Service[] = [
   {
     name: "Product Images",
     description:
-      "For optimal product image delivery, Cloudflare Images handles optimization, and global delivery. Images can be resized and optimized for each device, reducing load times while maintaining quality. Combined with R2, for general purpose object storage..",
+      "For optimal product image delivery, Cloudflare Images handles optimization, and global delivery. Images can be resized and optimized for each device, reducing load times while maintaining quality. Combined with R2, for general purpose object storage.",
     docsUrl: "https://developers.cloudflare.com/images/",
     selector: ".cf-image",
     highlightType: "both",
@@ -199,57 +199,43 @@ export const useCases: Service[] = [
         badgeText: "R2",
       },
     ],
-    // referenceArchitecture: {
-    //   imagePath: "/product-images-ref-arch.png",
-    //   title: "Product Images Reference Architecture",
-    //   setupSteps: [
-    //     {
-    //       icon: "📸",
-    //       title: "Upload Original Images",
-    //       description: "Store high-quality original images in R2 object storage"
-    //     },
-    //     {
-    //       icon: "🔗",
-    //       title: "Configure Image Variants",
-    //       description: "Set up Cloudflare Images with different sizes and formats for various use cases"
-    //     },
-    //     {
-    //       icon: "⚡",
-    //       title: "Enable Auto-optimization",
-    //       description: "Configure automatic format selection (WebP, AVIF) based on browser support"
-    //     }
-    //   ],
-    //   runtimeSteps: [
-    //     {
-    //       stepNumber: 1,
-    //       title: "User Loads Product Page",
-    //       description: "User navigates to a product page requiring image display"
-    //     },
-    //     {
-    //       stepNumber: 2,
-    //       title: "Request Optimized Image",
-    //       description: "Browser requests image with specific dimensions and format preferences"
-    //     },
-    //     {
-    //       stepNumber: 3,
-    //       title: "Cloudflare Images Processing",
-    //       description: "Cloudflare Images automatically resizes, optimizes format, and applies quality settings based on device and connection"
-    //     },
-    //     {
-    //       stepNumber: 4,
-    //       title: "Global CDN Delivery",
-    //       description: "Optimized image is cached and served from the nearest edge location for fastest delivery"
-    //     }
-    //   ],
-    //   benefits: [
-    //     "Automatic format optimization (WebP, AVIF) based on browser support",
-    //     "On-the-fly resizing for any screen size or device",
-    //     "Global CDN delivery with edge caching",
-    //     "Significant bandwidth savings through compression",
-    //     "Lazy loading and progressive enhancement support"
-    //   ],
-    //   implementationNotes: "Cloudflare Images integrates seamlessly with R2 storage, providing a complete image pipeline. The service automatically handles format conversion, resizing, and optimization, significantly reducing the complexity of image management in e-commerce applications."
-    // }
+    referenceArchitecture: {
+      imagePath: "/image-hosting.png",
+      title: "Image Hosting Reference Architecture",
+      runtimeSteps: [
+        {
+          stepNumber: 1,
+          title: "Store your image once",
+          description: "You upload your image to Cloudflare Images. No need to create different sizes or formats yourself."
+        },
+        {
+          stepNumber: 2,
+          title: "User visits your site",
+          description: "Someone opens a page that needs to show your image."
+        },
+        {
+          stepNumber: 3,
+          title: "Cloudflare delivers the best version",
+          description: "Cloudflare automatically picks the right size and format for each visitor’s device and browser."
+        },
+        {
+          stepNumber: 4,
+          title: "Image transformations happen automatically",
+          description: "Cloudflare can crop, resize, blur, or add watermarks to your images—all on the fly, with no extra work."
+        },
+        {
+          stepNumber: 5,
+          title: "Fast delivery from the CDN",
+          description: "The optimized image is sent from the closest Cloudflare server for quick loading, wherever your visitor is."
+        }
+      ],
+      benefits: [
+        "Simplified image management—just upload once and let Cloudflare do the rest.",
+        "Optimized delivery via Cloudflare’s global CDN for fast loading everywhere.",
+        "Built-in image transformations like cropping, watermarking, and blur effects—no plugins needed."
+      ],
+      implementationNotes: "Cloudflare Images removes complexity from image handling. Upload your image once, and Cloudflare automatically creates and delivers the best version for every device, with optional transformations. No manual resizing, no extra tools required."
+    }
   },
   {
     name: "Product Details",
