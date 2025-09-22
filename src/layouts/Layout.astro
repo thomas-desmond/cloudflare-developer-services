@@ -1,25 +1,28 @@
 ---
-import CloudflareServicesSidebar from '../components/CloudflareServicesSidebar.astro';
+import CloudflareServicesSidebar from "../components/CloudflareServicesSidebar.astro";
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/png" href="/icon.png" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Cloudflare Developer Services Demo</title>
-		<!-- Cloudflare Web Analytics -->
-		<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "f142030f14a84d068909d9f44b993d78"}'></script>
-		<!-- End Cloudflare Web Analytics -->
-	</head>
-	<body class="font-sans">
-		<div class="grid grid-cols-[1fr_20rem] min-h-screen">
-			<main class="overflow-y-auto">
-				<slot />
-			</main>
-			<CloudflareServicesSidebar />
-		</div>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/icon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Cloudflare Developer Services Demo</title>
+    <!-- Cloudflare Web Analytics -->
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "77fad62ab44c417082706d7b05dbe52d"}'
+    ></script><!-- End Cloudflare Web Analytics -->
+  </head>
+  <body class="font-sans">
+    <div class="grid grid-cols-[1fr_20rem] min-h-screen">
+      <main class="overflow-y-auto">
+        <slot />
+      </main>
+      <CloudflareServicesSidebar />
+    </div>
+  </body>
 </html>
